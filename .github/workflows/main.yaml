@@ -6,9 +6,16 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@main
+      - uses: actions/setup-node
+        with:
+          cache: 'npm'
       - name: setup
         run: make setup
       - name: test
         run: make test
       - name: lint
-        run: make lint  
+        run: make lint
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
